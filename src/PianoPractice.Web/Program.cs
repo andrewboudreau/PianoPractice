@@ -5,3 +5,6 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.Run();
+
+// Enable WebApplicationFactory access for testing
+public partial class Program { }

@@ -13,23 +13,29 @@ Web-based piano practice system with ASP.NET Core backend and vanilla JavaScript
 ```bash
 dotnet build                                    # Build solution
 dotnet run --project src/PianoPractice.Web     # Run web server (http://localhost:5000)
+dotnet test                                     # Run Playwright tests
+```
+
+First time running tests, install Playwright browsers:
+```bash
+pwsh tests/PianoPractice.Tests/bin/Debug/net10.0/playwright.ps1 install
 ```
 
 ## Project Structure
 
 ```
-/                           # Static files for GitHub Pages
-  index.html, *.html
-  js/                       # ES modules
-/src/PianoPractice.Web     # ASP.NET Core host
-  wwwroot/                  # Copy of static files served by .NET
+/src/PianoPractice.Web      # ASP.NET Core host
+  wwwroot/                   # Static files (single source of truth)
+    index.html, *.html
+    js/                      # ES modules
+/tests/PianoPractice.Tests  # Playwright + MSTest integration tests
 ```
 
-Static files exist in two places: root (for GitHub Pages) and wwwroot (for ASP.NET). Keep them in sync when modifying.
+GitHub Actions deploys wwwroot to GitHub Pages on push to master.
 
 ## Architecture
 
-### AudioScheduler (js/audio-scheduler.js)
+### AudioScheduler (wwwroot/js/audio-scheduler.js)
 
 The core timing engine. Uses Web Audio API's high-precision clock with a lookahead scheduler pattern to avoid timing drift from JavaScript's `setInterval`.
 
@@ -52,14 +58,15 @@ Important: `onBeat` receives audio context time (not wall clock). Use `scheduleC
 
 ### Practice Tools
 
-Each tool (metronome.html, practice.html) has:
-- HTML file with inline CSS
-- Corresponding JS module in `/js` that imports AudioScheduler
+Each tool has:
+- HTML file with inline CSS in wwwroot
+- Corresponding JS module in wwwroot/js that imports AudioScheduler
 - Self-contained UI logic initialized on DOMContentLoaded
 
 ### Adding New Practice Tools
 
-1. Create `newtool.html` with UI
-2. Create `js/newtool.js` importing AudioScheduler
+1. Create `wwwroot/newtool.html` with UI
+2. Create `wwwroot/js/newtool.js` importing AudioScheduler
 3. Implement `onBeat` callback for the exercise logic
-4. Add link to `index.html`
+4. Add link to `wwwroot/index.html`
+5. Add Playwright test in tests/PianoPractice.Tests
