@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Practice</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 300;
+            margin: 0 0 10px 0;
+        }
+        .subtitle {
+            color: #888;
+            margin-bottom: 50px;
+        }
+        .tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .tool-card {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 30px 40px;
+            text-decoration: none;
+            color: #eee;
+            transition: all 0.2s;
+            min-width: 200px;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            background: #1a2744;
+        }
+        .tool-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .tool-name {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .tool-desc {
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Piano Practice</h1>
+        <p class="subtitle">Tools to help you practice</p>
+
+        <div class="tools">
+            <a href="metronome.html" class="tool-card">
+                <div class="tool-icon">&#9834;</div>
+                <div class="tool-name">Metronome</div>
+                <div class="tool-desc">Keep steady tempo while practicing</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
