@@ -33,36 +33,39 @@
     </style>
 </head>
 <body>
-    <div class="metronome">
-        <h1>Metronome</h1>
+    <div class="container">
+        <a href="index.html" class="back-link">&larr; Back to tools</a>
+        <div class="metronome">
+            <h1>Metronome</h1>
 
-        <div class="label">BPM</div>
-        <div class="bpm-display" id="bpmDisplay">120</div>
+            <div class="label">BPM</div>
+            <div class="bpm-display" id="bpmDisplay">120</div>
 
-        <div class="bpm-controls">
-            <button class="btn btn-circle" id="bpmDown">-</button>
-            <input type="range" id="bpmSlider" min="30" max="240" value="120">
-            <button class="btn btn-circle" id="bpmUp">+</button>
+            <div class="bpm-controls">
+                <button class="btn btn-circle" id="bpmDown">-</button>
+                <input type="range" id="bpmSlider" min="30" max="240" value="120">
+                <button class="btn btn-circle" id="bpmUp">+</button>
+            </div>
+
+            <div class="beat-indicator" id="beatIndicator">
+                <div class="beat-dot"></div>
+                <div class="beat-dot"></div>
+                <div class="beat-dot"></div>
+                <div class="beat-dot"></div>
+            </div>
+
+            <div class="time-sig">
+                <label>Time Signature: </label>
+                <select id="timeSig">
+                    <option value="4">4/4</option>
+                    <option value="3">3/4</option>
+                    <option value="2">2/4</option>
+                    <option value="6">6/8</option>
+                </select>
+            </div>
+
+            <button class="btn btn-play" id="playBtn">&#9654;</button>
         </div>
-
-        <div class="beat-indicator" id="beatIndicator">
-            <div class="beat-dot"></div>
-            <div class="beat-dot"></div>
-            <div class="beat-dot"></div>
-            <div class="beat-dot"></div>
-        </div>
-
-        <div class="time-sig">
-            <label>Time Signature: </label>
-            <select id="timeSig">
-                <option value="4">4/4</option>
-                <option value="3">3/4</option>
-                <option value="2">2/4</option>
-                <option value="6">6/8</option>
-            </select>
-        </div>
-
-        <button class="btn btn-play" id="playBtn">&#9654;</button>
     </div>
 
     <script type="module" src="js/metronome.js"></script>
