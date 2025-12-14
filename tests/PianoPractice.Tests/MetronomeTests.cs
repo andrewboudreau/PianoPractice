@@ -1,4 +1,5 @@
 using Microsoft.Playwright.MSTest;
+using System.Text.RegularExpressions;
 
 namespace PianoPractice.Tests;
 
@@ -43,17 +44,15 @@ public class MetronomeTests : PageTest
         await Page.GotoAsync($"{WebAppFixture.BaseUrl}/metronome.html");
 
         var playBtn = Page.Locator("#playBtn");
+        var playingRegex = new Regex("\\bplaying\\b");
 
-        // Should not have 'playing' class initially
-        await Expect(playBtn).Not.ToHaveClassAsync("playing");
+        await Expect(playBtn).Not.ToHaveAttributeAsync("class", playingRegex);
 
-        // Click to start
         await playBtn.ClickAsync();
-        await Expect(playBtn).ToHaveClassAsync("playing");
+        await Expect(playBtn).ToHaveAttributeAsync("class", playingRegex);
 
-        // Click to stop
         await playBtn.ClickAsync();
-        await Expect(playBtn).Not.ToHaveClassAsync("playing");
+        await Expect(playBtn).Not.ToHaveAttributeAsync("class", playingRegex);
     }
 
     [TestMethod]
