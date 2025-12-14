@@ -79,12 +79,6 @@ class FingerPractice {
         });
     }
 
-    getCurrentFinger() {
-        const note = this.notes[this.noteIndex];
-        const fingers = this.currentHand === 'left' ? this.leftHandFingers : this.rightHandFingers;
-        return fingers[note];
-    }
-
     highlightKey(note) {
         const keys = this.keyboard.querySelectorAll('.key');
         keys.forEach(key => {
@@ -95,42 +89,41 @@ class FingerPractice {
         });
     }
 
-    updateDirection() {
-        // First half (0-4) is going up, second half (5-8) is going down
-        const goingUp = this.noteIndex <= 4;
-        this.arrowUp.classList.toggle('active', goingUp);
-        this.arrowDown.classList.toggle('active', !goingUp);
-    }
+    updateDisplay(noteIndex, rep, hand) {
+        const note = this.notes[noteIndex];
+        const fingers = hand === 'left' ? this.leftHandFingers : this.rightHandFingers;
+        const finger = fingers[note];
 
-    updateDisplay() {
-        const note = this.notes[this.noteIndex];
-        const finger = this.getCurrentFinger();
-
-        this.currentHandDisplay.textContent = this.currentHand === 'right' ? 'Right' : 'Left';
+        this.currentHandDisplay.textContent = hand === 'right' ? 'Right' : 'Left';
         this.currentNoteDisplay.textContent = note;
         this.currentFingerDisplay.textContent = finger;
-        this.currentRepDisplay.textContent = `${this.currentRep}/${this.totalReps}`;
+        this.currentRepDisplay.textContent = `${rep}/${this.totalReps}`;
 
         this.highlightKey(note);
-        this.updateDirection();
-        this.updateProgress();
+
+        // Direction: first half (0-4) is going up, second half (5-8) is going down
+        const goingUp = noteIndex <= 4;
+        this.arrowUp.classList.toggle('active', goingUp);
+        this.arrowDown.classList.toggle('active', !goingUp);
+
+        this.updateProgress(noteIndex, rep, hand);
     }
 
-    updateProgress() {
+    updateProgress(noteIndex, rep, hand) {
         const handsToPlay = this.hand === 'both' ? 2 : 1;
         const totalNotes = this.totalReps * this.notes.length * handsToPlay;
-        const handOffset = (this.hand === 'both' && this.currentHand === 'left')
+        const handOffset = (this.hand === 'both' && hand === 'left')
             ? this.totalReps * this.notes.length
             : 0;
-        const completedNotes = handOffset + (this.currentRep * this.notes.length) + this.noteIndex;
+        const completedNotes = handOffset + (rep * this.notes.length) + noteIndex;
 
         const percent = (completedNotes / totalNotes) * 100;
         this.progressFill.style.width = `${percent}%`;
 
         if (this.hand === 'both') {
-            this.progressText.textContent = `${this.currentHand === 'right' ? 'Right' : 'Left'} hand - Rep ${this.currentRep + 1} of ${this.totalReps}`;
+            this.progressText.textContent = `${hand === 'right' ? 'Right' : 'Left'} hand - Rep ${rep + 1} of ${this.totalReps}`;
         } else {
-            this.progressText.textContent = `Rep ${this.currentRep + 1} of ${this.totalReps}`;
+            this.progressText.textContent = `Rep ${rep + 1} of ${this.totalReps}`;
         }
     }
 
@@ -166,7 +159,7 @@ class FingerPractice {
         // Schedule audio
         this.playClick(time, note);
 
-        // Schedule UI update
+        // Schedule UI update - capture current state without modifying instance
         const currentTime = this.audioContext.currentTime;
         const delay = (time - currentTime) * 1000;
 
@@ -176,10 +169,7 @@ class FingerPractice {
 
         setTimeout(() => {
             if (this.isPlaying) {
-                this.noteIndex = scheduledNoteIndex;
-                this.currentRep = scheduledRep;
-                this.currentHand = scheduledHand;
-                this.updateDisplay();
+                this.updateDisplay(scheduledNoteIndex, scheduledRep, scheduledHand);
             }
         }, Math.max(0, delay));
     }
