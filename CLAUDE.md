@@ -4,18 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Web-based piano practice system hosted on GitHub Pages. No build step, no dependencies - just vanilla JavaScript with ES modules.
+Web-based piano practice system with ASP.NET Core backend and vanilla JavaScript frontend.
 
 **Live site:** https://andrewboudreau.github.io/PianoPractice/
 
-## Running Locally
+## Commands
 
-Open `index.html` directly in a browser. For ES modules to work during development, you may need a local server:
 ```bash
-npx serve .
-# or
-python -m http.server 8000
+dotnet build                                    # Build solution
+dotnet run --project src/PianoPractice.Web     # Run web server (http://localhost:5000)
 ```
+
+## Project Structure
+
+```
+/                           # Static files for GitHub Pages
+  index.html, *.html
+  js/                       # ES modules
+/src/PianoPractice.Web     # ASP.NET Core host
+  wwwroot/                  # Copy of static files served by .NET
+```
+
+Static files exist in two places: root (for GitHub Pages) and wwwroot (for ASP.NET). Keep them in sync when modifying.
 
 ## Architecture
 
